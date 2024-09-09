@@ -1,0 +1,33 @@
+name: Generate Documentation
+
+on:
+  push:
+    branches:
+      - main  # Assicurati che il nome del branch corrisponda
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # Specifica la versione di Python
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run dependency analyzer
+        run: |
+          cd test
+          python dependency_analyzer.py
+
+      - name: Run maker software list
+        run: |
+          cd test
+          python maker_software_list.py

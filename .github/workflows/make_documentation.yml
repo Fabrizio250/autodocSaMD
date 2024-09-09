@@ -22,10 +22,10 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run dependency analyzer
+      - name: Run maker soup list
         run: |
           cd test
-          python dependency_analyzer.py
+          python maker_soup_list.py
 
       - name: Run maker software list
         run: |

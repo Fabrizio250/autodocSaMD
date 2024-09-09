@@ -24,10 +24,10 @@ jobs:
 
       - name: Run maker soup list
         run: |
-          cd test
+          cd maker_documentation
           python maker_soup_list.py
 
       - name: Run maker software list
         run: |
-          cd test
+          cd maker_documentation
           python maker_software_list.py

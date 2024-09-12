@@ -1,6 +1,5 @@
 import os
 import re
-import json
 import requests
 import importlib.metadata
 import sysconfig
@@ -150,18 +149,8 @@ def get_last_verified_at_from_pypi(package_name):
         print(f"Errore nella richiesta di informazioni per {package_name} da PyPI: {e}")
         return 'Unknown'
 
-import os
-import re
-import json
-import requests
-import importlib.metadata
-import sysconfig
-import pkgutil
-from jinja2 import Environment, FileSystemLoader
 
-# Altre funzioni rimangono invariate, le lasciamo per il contesto.
-
-# Funzione per ottenere le informazioni del pacchetto (rimane invariata)
+""" Funzione per ottenere le informazioni del pacchetto """
 def get_package_info(package_name):
     try:
         programming_language = detect_programming_language(package_name)
@@ -198,7 +187,7 @@ def get_package_info(package_name):
         }
     return info
 
-# Modifica: generazione SOUP list senza salvataggio intermedio
+
 def generate_soup_list(requirements, unknown_dependencies):
     """Genera la SOUP list con componenti di origine sconosciuta e la restituisce."""
     soup_list = []

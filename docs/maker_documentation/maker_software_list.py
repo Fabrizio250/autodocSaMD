@@ -3,14 +3,17 @@ import json
 from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 
+
 # Funzione per scansionare tutti i file e raccogliere quelli potenzialmente di configurazione
 def scan_project_files():
     config_files = []
-    for root, dirs, files in os.walk("../"):
+    for root, dirs, files in os.walk("../../"):
         for file in files:
-            if file.endswith((".yml", ".yaml", ".json", ".toml", ".ini", ".cfg", ".config", ".xml", ".conf", ".sh", "Dockerfile", "Makefile")):
+            if file.endswith((".yml", ".yaml", ".json", ".toml", ".ini", ".cfg", ".config", ".xml", ".conf", ".sh",
+                              "Dockerfile", "Makefile")):
                 config_files.append(os.path.join(root, file))
     return config_files
+
 
 # Funzione per dedurre informazioni sui file
 def deduce_tool_from_file(file_path):
@@ -39,6 +42,7 @@ def deduce_tool_from_file(file_path):
 def get_current_date():
     return datetime.now().strftime('%Y-%m-%d')
 
+
 # Funzione per caricare lo stato precedente della Software List da un file JSON
 def load_previous_state(file_path='previous_software_list.json'):
     if os.path.exists(file_path):
@@ -46,10 +50,12 @@ def load_previous_state(file_path='previous_software_list.json'):
             return json.load(file)
     return {}
 
+
 # Funzione per salvare lo stato corrente della Software List in un file JSON
 def save_current_state(software_list, file_path='previous_software_list.json'):
     with open(file_path, 'w') as file:
         json.dump(software_list, file, indent=4)
+
 
 # Funzione per costruire la Software List in modo generico senza duplicati
 def build_generic_software_list():
@@ -76,6 +82,7 @@ def build_generic_software_list():
 
     return software_list
 
+
 # Funzione per identificare strumenti dismessi
 def identify_decommissioned_tools(current_list, previous_list):
     decommissioned_tools = []
@@ -91,18 +98,23 @@ def identify_decommissioned_tools(current_list, previous_list):
 
     return decommissioned_tools
 
+
 # Funzione per salvare la Software List in un file markdown usando Jinja2
-def save_software_list_to_markdown(software_list, template_path='../docs/software_list_template.md', output_path='../test/test_docs/software-list.md'):
+def save_software_list_to_markdown(software_list, template_path, output_path):
     template_dir = os.path.dirname(template_path)
     template_name = os.path.basename(template_path)
 
     env = Environment(loader=FileSystemLoader(template_dir))
-
     abs_template_path = os.path.abspath(template_path)
+    abs_output_path = os.path.abspath(output_path)
 
+    # Verifica l'esistenza del template
     if not os.path.isfile(abs_template_path):
         print(f"Errore: Il template {abs_template_path} non è stato trovato.")
         return
+
+    # Crea la directory di output se non esiste
+    os.makedirs(os.path.dirname(abs_output_path), exist_ok=True)
 
     try:
         # Carica il template
@@ -112,36 +124,28 @@ def save_software_list_to_markdown(software_list, template_path='../docs/softwar
         rendered_content = template.render(software_list=software_list)
 
         # Salva il contenuto renderizzato nel file di output
-        with open(output_path, 'w') as file:
+        with open(abs_output_path, 'w') as file:
             file.write(rendered_content)
 
-        print(f"File {output_path} aggiornato con successo.")
+        print(f"File {abs_output_path} aggiornato con successo.")
 
     except FileNotFoundError as e:
         print(f"Errore: {e}")
     except Exception as e:
         print(f"Si è verificato un errore: {e}")
 
-# Funzione principale per gestire il processo
-def main():
-    # Carica lo stato precedente della software list
+
+# Funzione per eseguire il primo script
+def run_software_list():
+    template_path = '../source/template_docs/software_list_template.md'
+    output_path = '../md_docs/software-list.md'
+
     previous_software_list = load_previous_state()
-
-    # Costruisci la lista attuale dei software
     current_software_list = build_generic_software_list()
-
-    # Identifica i tool dismessi
     decommissioned_tools = identify_decommissioned_tools(current_software_list, previous_software_list)
-
-    # Combina la lista corrente con gli strumenti dismessi
     complete_software_list = current_software_list + decommissioned_tools
-
-    # Salva la nuova lista come stato corrente
     save_current_state(current_software_list)
+    save_software_list_to_markdown(complete_software_list, template_path, output_path)
 
-    # Salva la lista in formato markdown
-    save_software_list_to_markdown(complete_software_list)
 
-# Esegui lo script
-if __name__ == '__main__':
-    main()
+

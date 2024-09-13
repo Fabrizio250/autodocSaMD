@@ -29,13 +29,14 @@ def parse_requirements(file_path):
     print("Dipendenze lette da requirements.txt:", requirements)  # Debug
     return requirements
 
-def parse_imports_from_source(directory):
-    """Estrae i moduli importati dal codice sorgente nella directory specificata."""
+def parse_imports_from_source(directory, excluded_files):
+    """Estrae i moduli importati dal codice sorgente nella directory specificata, escludendo specifici file."""
     imports = set()
     import_pattern = re.compile(r'^\s*(import|from)\s+([a-zA-Z0-9_.]+)')
+
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith('.py'):
+            if file.endswith('.py') and file not in excluded_files:
                 file_path = os.path.join(root, file)
                 with open(file_path, 'r') as f:
                     for line in f:
@@ -46,10 +47,14 @@ def parse_imports_from_source(directory):
     print("Moduli importati trovati:", imports)  # Debug
     return list(imports)
 
-def find_unknown_dependencies(requirements, imports, standard_libs):
-    """Trova dipendenze sconosciute non presenti in requirements.txt e non standard."""
+def find_unknown_dependencies(requirements, imports, standard_libs, excluded_files):
+    """Trova dipendenze sconosciute non presenti in requirements.txt e non standard, escludendo moduli locali."""
+    local_modules = {'maker_software_list', 'maker_soup_list'}
     requirements_set = set(requirements)
-    unknown_imports = [imp for imp in imports if imp not in requirements_set and imp not in standard_libs]
+
+    # Filtra importazioni, ignorando quelle locali e quelle standard
+    unknown_imports = [imp for imp in imports if imp not in requirements_set and imp not in standard_libs and imp not in excluded_files and imp not in local_modules]
+
     return unknown_imports
 
 def update_requirements_file(file_path, unknown_dependencies):
@@ -187,7 +192,6 @@ def get_package_info(package_name):
         }
     return info
 
-
 def generate_soup_list(requirements, unknown_dependencies):
     """Genera la SOUP list con componenti di origine sconosciuta e la restituisce."""
     soup_list = []
@@ -251,27 +255,21 @@ def generate_soup_list_md(soup_list, template_path, output_md_path):
         f.write(output)
     print(f"File markdown aggiornato: {output_md_path}")
 
-# Specifica la directory del codice sorgente e il file requirements.txt
-source_directory = '.'  # Usa la cartella corrente
-requirements_file = '../requirements.txt'
+def run_soup_list():
+    # File da escludere
+    excluded_files = {'maker_software_list.py', 'maker_soup_list.py'}
+    source_directory = '.'  # Cartella corrente
+    requirements_file = 'requirements.txt'
+    standard_libs = get_standard_libs()
+    requirements = parse_requirements(requirements_file)
+    source_imports = parse_imports_from_source(source_directory, excluded_files)
+    unknown_dependencies = find_unknown_dependencies(requirements, source_imports, standard_libs, excluded_files)
+    update_requirements_file(requirements_file, unknown_dependencies)
 
-# Esegui le operazioni
-standard_libs = get_standard_libs()
-requirements = parse_requirements(requirements_file)
-source_imports = parse_imports_from_source(source_directory)
+    # Generazione markdown SOUP list
+    soup_list = generate_soup_list(requirements, unknown_dependencies)
+    template_path_soup = '../source/template_docs/soup_list_template.md'
+    output_md_path_soup = '../md_docs/soup-list.md'
+    generate_soup_list_md(soup_list, template_path_soup, output_md_path_soup)
 
-# Trova dipendenze sconosciute
-unknown_dependencies = find_unknown_dependencies(requirements, source_imports, standard_libs)
 
-# Aggiorna requirements.txt con solo le librerie di terze parti
-update_requirements_file(requirements_file, unknown_dependencies)
-
-# Genera la SOUP list
-soup_list = generate_soup_list(requirements, unknown_dependencies)
-
-# Definizione file per le operazioni di creazione documentazione SOUP_List.md
-template_path = '../docs/soup_list_template.md'  # Aggiornato per riflettere il percorso corretto
-output_md_path = '../test/test_docs/soup-list.md'  # Creare il file nella sottocartella test_docs
-
-# Genera il markdown direttamente dalla SOUP list in memoria
-generate_soup_list_md(soup_list, template_path, output_md_path)

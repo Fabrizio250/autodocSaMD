@@ -3,7 +3,7 @@ name: Generate Documentation
 on:
   push:
     branches:
-      - main  # Assicurati che il nome del branch corrisponda
+      - main
 
 jobs:
   build:
@@ -16,18 +16,29 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'  # Specifica la versione di Python
+          python-version: '3.x'
 
       - name: Install dependencies
         run: |
+          cd cookiecutter/docs/maker_documentation
           pip install -r requirements.txt
 
-      - name: Run maker soup list
+      - name: Run main script
         run: |
-          cd maker_documentation
-          python maker_soup_list.py
+          cd cookiecutter/docs/maker_documentation
+          python main.py
 
-      - name: Run maker software list
+      - name: Configure Git
         run: |
-          cd maker_documentation
-          python maker_software_list.py
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+      - name: Commit and push changes
+        run: |
+          cd cookiecutter/docs
+          git add md_docs/software-list.md
+          git add md_docs/soup-list.md
+          git commit -m 'Update documentation files' || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

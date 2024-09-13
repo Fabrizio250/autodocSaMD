@@ -9,8 +9,9 @@
 
 | ID | Name          | Manufacturer     | Bug tracker URL                            | Needs validation? | Next validation | Last validation | Decommissioning |
 |----|---------------|------------------|--------------------------------------------|-------------------|-----------------|-----------------|-----------------|
-| 1  | GitHub        | GitHub, Inc.     |                                            | yes               | 2020-05-17      |                 |                 |
-| 2  | IntelliJ IDEA | JetBrains s.r.o. | https://youtrack.jetbrains.com/issues/IDEA | yes               | 2020-05-17      |                 |                 |
+ | 1  | GitHub | GitHub, Inc. | https://github.com/github/feedback/issues | - | - | 2024-09-13 | - |
+ | 2  | PyCharm/IntelliJ IDEA | JetBrains | https://youtrack.jetbrains.com/issues/IDEA | - | - | 2024-09-13 | - |
+
 
 ---
 

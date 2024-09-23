@@ -44,8 +44,8 @@
 
 | ID | Software System | Package Name | Programming Language | Version | Website                                          | Last verified at | Risk Level | Requirements               | Verification Reasoning                                                    |
 |----|-----------------|--------------|----------------------|---------|--------------------------------------------------|------------------|------------|----------------------------|---------------------------------------------------------------------------|
-| 1 | MacOS | numpy | Python | 2.1.1 | [https://numpy.org](https://numpy.org) | 2024-09-03 | N/A | N/A | N/A |
-| 2 | MacOS | scipy | Python | 1.14.1 | [https://scipy.org/](https://scipy.org/) | 2024-08-21 | N/A | N/A | N/A |
+| 1 | MacOS | numpy | Python | 2.0.2 | [https://numpy.org](https://numpy.org) | 2024-09-03 | N/A | N/A | N/A |
+| 2 | MacOS | scipy | Python | 1.13.1 | [https://scipy.org/](https://scipy.org/) | 2024-08-21 | N/A | N/A | N/A |
 | 3 | OS Independent | seaborn | Python | 0.13.2 | [unknown](unknown) | 2024-01-25 | N/A | N/A | N/A |
 | 4 | OS Independent | Jinja2 | Python | 3.1.4 | [unknown](unknown) | 2024-05-05 | N/A | N/A | N/A |
 | 5 | OS Independent | pandas | Python | 2.2.3 | [https://pandas.pydata.org](https://pandas.pydata.org) | 2024-09-20 | N/A | N/A | N/A |

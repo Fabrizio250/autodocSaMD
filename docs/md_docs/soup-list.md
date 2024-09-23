@@ -51,6 +51,13 @@
 | 5 | OS Independent | pandas | Python | 2.2.3 | [https://pandas.pydata.org](https://pandas.pydata.org) | 2024-09-20 | N/A | N/A | N/A |
 | 6 | OS Independent | requests | Python | 2.32.3 | [https://requests.readthedocs.io](https://requests.readthedocs.io) | 2024-05-29 | N/A | N/A | N/A |
 | 7 | Unknown | matplotlib | Python | 3.9.2 | [unknown](unknown) | 2024-08-13 | N/A | N/A | N/A |
+| 8 | Unknown | tensorflow | 3 | unknown | [unknown](unknown) | 2024-07-11 | unknown | unknown | unknown |
+| 9 | Unknown | torch | C++ | unknown | [unknown](unknown) | 2024-09-04 | unknown | unknown | unknown |
+| 10 | MacOS | keras | 3 | unknown | [unknown](unknown) | 2024-08-12 | unknown | unknown | unknown |
+| 11 | MacOS | pytest | Only | unknown | [unknown](unknown) | 2024-09-10 | unknown | unknown | unknown |
+| 12 | Unknown | PIL | Python | unknown | [unknown](unknown) | Unknown | unknown | unknown | unknown |
+| 13 | Unknown | sklearn | Unknown | unknown | [unknown](unknown) | 2023-12-01 | unknown | unknown | unknown |
+| 14 | MacOS X | imageio | 3 | unknown | [unknown](unknown) | 2024-08-19 | unknown | unknown | unknown |
 
 
 

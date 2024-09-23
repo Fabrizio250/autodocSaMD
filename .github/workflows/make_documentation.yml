@@ -35,7 +35,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          cd cookiecutter/docs
+          cd docs
           git add md_docs/software-list.md
           git add md_docs/soup-list.md
           git commit -m 'Update documentation files' || echo "No changes to commit"

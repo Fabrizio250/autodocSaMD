@@ -28,42 +28,53 @@ jobs:
           cd docs/maker_documentation
           python main.py  # Esegui lo script che genera i file di documentazione
 
-      - name: Debug file existence
+      - name: Debug: check generated files
         run: |
           cd docs/md_docs
-          echo "Checking if software-list.md exists:"
-          ls -l software-list.md  # Verifica se il file esiste
-          echo "Checking if soup-list.md exists:"
-          ls -l soup-list.md  # Verifica se il file esiste
+          echo "Verifica se software-list.md esiste:"
+          ls -l software-list.md || echo "software-list.md non trovato"
+          echo "Verifica se soup-list.md esiste:"
+          ls -l soup-list.md || echo "soup-list.md non trovato"
 
-      - name: Configure Git
-        run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-
-      - name: Force add and commit generated docs
+      - name: Forza l'aggiunta dei file generati
         run: |
           cd docs
 
-          # Controlla lo stato corrente
-          echo "Stato di Git prima di aggiungere i file"
-          git status
+          # Controlla e aggiungi software-list.md
+          if [ -f "md_docs/software-list.md" ]; then
+            echo "Forzo l'aggiunta di software-list.md"
+            git add --force md_docs/software-list.md
+          else
+            echo "software-list.md non esiste, non aggiunto!"
+          fi
 
-          # Forza l'aggiunta dei file, anche se non tracciati o modificati
-          git add --force md_docs/software-list.md md_docs/soup-list.md
+          # Controlla e aggiungi soup-list.md
+          if [ -f "md_docs/soup-list.md" ]; then
+            echo "Forzo l'aggiunta di soup-list.md"
+            git add --force md_docs/soup-list.md
+          else
+            echo "soup-list.md non esiste, non aggiunto!"
+          fi
 
-          # Mostra di nuovo lo stato per vedere se i file sono aggiunti correttamente
-          echo "Stato di Git dopo aver aggiunto i file"
-          git status
+      - name: Verifica stato Git dopo l'aggiunta
+        run: |
+          git status  # Mostra lo stato per confermare che i file siano stati aggiunti
 
-          # Forza un commit se ci sono modifiche
-          git commit -m "Aggiornamento documentazione" || echo "Nessun cambiamento da committare"
+      - name: Commit and push changes
+        run: |
+          cd docs
 
-          # Effettua il push
-          git push origin HEAD:${{ github.ref }}
+          # Se ci sono modifiche, committale
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare."
+          else
+            echo "Modifiche trovate, committando."
+            git commit -m "Aggiornamento documentazione automatizzato"
+            git push origin HEAD:${{ github.ref }}
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Clean up unwanted files
+      - name: Clean up untracked files (esclusi i generati)
         run: |
           git clean -fdX  # Rimuove file non tracciati come __pycache__

@@ -1,3 +1,4 @@
+
 import os
 import re
 import requests
@@ -8,10 +9,16 @@ from jinja2 import Environment, FileSystemLoader
 
 def find_repo_root(start_directory):
     """Trova la radice del repository risalendo nella gerarchia delle directory."""
-    for root, dirs, files in os.walk(start_directory):
-        if '.git' in dirs:
-            return root  # Restituisce la directory contenente .git
-    return None  # Se non trova la radice del repository
+    current_directory = os.path.abspath(start_directory)  # Assicurati di avere il percorso assoluto
+
+    while True:
+        if os.path.exists(os.path.join(current_directory, '.git')):
+            return current_directory  # Restituisce la directory contenente .git
+        parent_directory = os.path.dirname(current_directory)
+        if parent_directory == current_directory:  # Se non ci sono più genitori
+            break
+        current_directory = parent_directory
+
 
 def get_standard_libs():
     """Restituisce un set di nomi di moduli della libreria standard di Python."""
@@ -265,7 +272,7 @@ def generate_soup_list_md(soup_list, template_path, output_md_path):
 def run_soup_list():
     # File da escludere
     excluded_files = {'maker_software_list.py', 'maker_soup_list.py'}
-    source_directory = find_repo_root  # root di progetto
+    source_directory = find_repo_root(os.getcwd())  # root di progetto
     requirements_file = 'requirements.txt'
     standard_libs = get_standard_libs()
     requirements = parse_requirements(requirements_file)

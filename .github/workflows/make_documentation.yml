@@ -28,35 +28,42 @@ jobs:
           cd docs/maker_documentation
           python main.py  # Esegui lo script che genera i file di documentazione
 
-      - name: Verify generated files
+      - name: Debug file existence
         run: |
           cd docs/md_docs
           echo "Checking if software-list.md exists:"
-          ls -l software-list.md  # Controlla se il file esiste
+          ls -l software-list.md  # Verifica se il file esiste
           echo "Checking if soup-list.md exists:"
-          ls -l soup-list.md  # Controlla se il file esiste
-          
+          ls -l soup-list.md  # Verifica se il file esiste
+
       - name: Configure Git
         run: |
           git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
 
-      - name: Add and commit documentation changes
+      - name: Force add and commit generated docs
         run: |
           cd docs
-          git add --force md_docs/software-list.md md_docs/soup-list.md  # Forza l'aggiunta di questi file
-          
-          # Mostra lo stato per verificare che i file siano stati aggiunti correttamente
+
+          # Controlla lo stato corrente
+          echo "Stato di Git prima di aggiungere i file"
           git status
 
-          # Verifica se ci sono cambiamenti nei file specifici
-          git diff --cached --exit-code || git commit -m 'Update documentation files' || echo "No changes to commit"
+          # Forza l'aggiunta dei file, anche se non tracciati o modificati
+          git add --force md_docs/software-list.md md_docs/soup-list.md
 
-          # Effettua il push delle modifiche solo se c'è stato un commit
+          # Mostra di nuovo lo stato per vedere se i file sono aggiunti correttamente
+          echo "Stato di Git dopo aver aggiunto i file"
+          git status
+
+          # Forza un commit se ci sono modifiche
+          git commit -m "Aggiornamento documentazione" || echo "Nessun cambiamento da committare"
+
+          # Effettua il push
           git push origin HEAD:${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Clean up unwanted files
         run: |
-          git clean -fdX  # Rimuove i file untracked come __pycache__
+          git clean -fdX  # Rimuove file non tracciati come __pycache__

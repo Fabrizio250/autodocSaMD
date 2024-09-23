@@ -265,7 +265,7 @@ def generate_soup_list_md(soup_list, template_path, output_md_path):
 def run_soup_list():
     # File da escludere
     excluded_files = {'maker_software_list.py', 'maker_soup_list.py'}
-    source_directory = root  # root di progetto
+    source_directory = find_repo_root  # root di progetto
     requirements_file = 'requirements.txt'
     standard_libs = get_standard_libs()
     requirements = parse_requirements(requirements_file)

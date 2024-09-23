@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd cookiecutter/docs/maker_documentation
+          cd docs/maker_documentation
           pip install -r requirements.txt
 
       - name: Run main script

@@ -65,7 +65,87 @@ jobs:
           cd docs
 
           # Se ci sono modifiche, committale
+          if git diff --cached --quiet; thenname: Generate Documentation
+
+on:
+  push:
+    branches:
+      - '**'  # Esegui il workflow su tutti i branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          cd docs/maker_documentation
+          pip install -r requirements.txt
+
+      - name: Run main script
+        run: |
+          cd docs/maker_documentation
+          python main.py  # Esegui lo script che genera i file di documentazione
+
+      - name: Debug: check generated files
+        run: |
+          cd docs/md_docs
+          echo "Verifica se software-list.md esiste:"
+          ls -l software-list.md || echo "software-list.md non trovato"
+          echo "Verifica se soup-list.md esiste:"
+          ls -l soup-list.md || echo "soup-list.md non trovato"
+
+      - name: Forza l'aggiunta dei file generati
+        run: |
+          cd docs
+
+          # Controlla e aggiungi software-list.md
+          if [ -f "md_docs/software-list.md" ]; then
+            echo "Forzo l'aggiunta di software-list.md"
+            git add --force md_docs/software-list.md
+          else
+            echo "software-list.md non esiste, non aggiunto!"
+          fi
+
+          # Controlla e aggiungi soup-list.md
+          if [ -f "md_docs/soup-list.md" ]; then
+            echo "Forzo l'aggiunta di soup-list.md"
+            git add --force md_docs/soup-list.md
+          else
+            echo "soup-list.md non esiste, non aggiunto!"
+          fi
+
+      - name: Verifica stato Git dopo l'aggiunta
+        run: |
+          git status  # Mostra lo stato per confermare che i file siano stati aggiunti
+
+      - name: Commit and push changes
+        run: |
+          cd docs
+
+          # Se ci sono modifiche, committale
           if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare."
+          else
+            echo "Modifiche trovate, committando."
+            git commit -m "Aggiornamento documentazione automatizzato"
+            git push origin HEAD:${{ github.ref }}
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up untracked files (esclusi i generati)
+        run: |
+          git clean -fdX  # Rimuove file non tracciati come __pycache__
+
             echo "Nessuna modifica da committare."
           else
             echo "Modifiche trovate, committando."

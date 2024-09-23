@@ -13,7 +13,6 @@ import torch
 
 # Import di moduli per la gestione delle immagini
 import PIL
-import cv2
 import imageio
 
 # Import di moduli di gestione del sistema operativo

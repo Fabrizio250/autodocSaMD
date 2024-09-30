@@ -18,10 +18,10 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies from requirements.txt
+      - name: Install dependencies
         run: |
           # Cerca e installa le dipendenze dal file requirements.txt se esiste
-          REQUIREMENTS_FILE=$(find . -name "requirements.txt")
+          REQUIREMENTS_FILE=$(find . -name "requirements.txt" | head -n 1)
           if [ -f "$REQUIREMENTS_FILE" ]; then
             echo "Found requirements.txt at $REQUIREMENTS_FILE"
             pip install -r "$REQUIREMENTS_FILE"
@@ -34,19 +34,6 @@ jobs:
           cd docs/maker_documentation
           python main.py
 
-      - name: Update requirements.txt with any new dependencies
-        run: |
-          # Se esiste, aggiorna il file requirements.txt con tutte le dipendenze installate
-          REQUIREMENTS_FILE=$(find . -name "requirements.txt")
-          if [ -f "$REQUIREMENTS_FILE" ]; then
-            echo "Saving current environment dependencies to $REQUIREMENTS_FILE"
-            pip freeze > "$REQUIREMENTS_FILE"
-          else
-            # Se non esiste, crea il file requirements.txt nella root del progetto
-            echo "Creating a new requirements.txt file"
-            pip freeze > ./requirements.txt
-          fi
-
       - name: Set up Git config
         run: |
           git config --global user.email "author_email"
@@ -54,18 +41,19 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          # Aggiungi tutti i file modificati
-          git add docs/md_docs/software-list.md
-          git add docs/md_docs/soup-list.md
-
-          # Aggiungi il requirements.txt se esiste
-          REQUIREMENTS_FILE=$(find . -name "requirements.txt")
-          if [ -f "$REQUIREMENTS_FILE" ]; then
-            git add "$REQUIREMENTS_FILE"
-          fi
+          cd docs
+          # Aggiungi i file specificati
+          git add md_docs/software-list.md
+          git add md_docs/soup-list.md
+          
+          # Aggiungi direttamente requirements.txt
+          git add requirements.txt
+          
+          # Aggiungi previous_json_list.json
+          git add previous_json_list.json
 
           # Effettua il commit e push delle modifiche
-          git commit -m 'Update documentation files and requirements.txt' || echo "No changes to commit"
+          git commit -m 'Update documentation files and requirements' || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

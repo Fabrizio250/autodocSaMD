@@ -308,10 +308,12 @@ def run_soup_list():
     # File da escludere
     excluded_files = {'maker_software_list.py', 'maker_soup_list.py'}
     source_directory = find_repo_root(os.getcwd())  # root di progetto
+    print( source_directory)
     if not source_directory:
         print("Nessuna radice del repository trovata.")
         return
-    requirements_file = 'requirements.txt'
+
+    requirements_file = os.path.join(source_directory, 'requirements.txt')
     standard_libs = get_standard_libs()
     requirements = parse_requirements(requirements_file)
     source_imports = parse_imports_from_source(source_directory, excluded_files)
@@ -320,7 +322,8 @@ def run_soup_list():
 
     # Generazione markdown SOUP list
     soup_list = generate_soup_list(requirements, unknown_dependencies)
-    template_path_soup = '../source/template_docs/soup_list_template.md'
-    output_md_path_soup = '../md_docs/soup-list.md'
+    template_path_soup = os.path.join(source_directory, 'source/template_docs/soup_list_template.md')
+    output_md_path_soup = os.path.join(source_directory, 'md_docs/soup-list.md')
     generate_soup_list_md(soup_list, template_path_soup, output_md_path_soup)
+
 

@@ -42,18 +42,25 @@ jobs:
       - name: Commit and push changes
         run: |
           cd docs
+          
           # Aggiungi i file specificati
           git add md_docs/software-list.md
           git add md_docs/soup-list.md
           
-          # Aggiungi direttamente requirements.txt
-          git add requirements.txt
-          
+          # Cerca e aggiungi il file requirements.txt
+          REQUIREMENTS_FILE=$(find . -name "requirements.txt" | head -n 1)
+          if [ -f "$REQUIREMENTS_FILE" ]; then
+            echo "Adding requirements.txt at $REQUIREMENTS_FILE"
+            git add "$REQUIREMENTS_FILE"  # Aggiungi il file requirements.txt
+          else
+            echo "No requirements.txt found to add"
+          fi
+
           # Aggiungi previous_json_list.json
           git add previous_json_list.json
 
           # Effettua il commit e push delle modifiche
-          git commit -m 'Update documentation files and requirements' || echo "No changes to commit"
+          git commit -m 'Update documentation files and add requirements.txt' || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -38,6 +38,7 @@ jobs:
           cd docs
           git add md_docs/software-list.md
           git add md_docs/soup-list.md
+          git add requirements.txt
           git commit -m 'Update documentation files' || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }} --force
         env:

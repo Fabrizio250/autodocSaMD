@@ -20,7 +20,6 @@ def find_git_root(start_path):
 def scan_project_files():
     config_files = []
     project_root = find_git_root(os.getcwd())  # Inizia dalla directory corrente
-
     if project_root is None:
         print("Errore: Radice del progetto non trovata.")
         return config_files
@@ -81,13 +80,17 @@ def build_generic_software_list():
     seen_tools = set()  # Set per tenere traccia dei tool già aggiunti
     config_files = scan_project_files()
 
+ #Aggiunta variabile locale per gestione dell'ID
+    current_id=0
+
     for idx, file_path in enumerate(config_files, start=1):
         tool_name, manufacturer, bug_tracker_url = deduce_tool_from_file(file_path)
 
         # Aggiungi alla lista solo se il tool è riconosciuto e non è già stato inserito
         if tool_name and tool_name not in seen_tools:
+            current_id += 1
             software_list.append({
-                'ID': idx,
+                'ID': current_id,
                 'Name': tool_name,
                 'Manufacturer': manufacturer,
                 'Bug tracker URL': bug_tracker_url,

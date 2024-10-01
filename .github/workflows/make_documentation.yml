@@ -56,8 +56,8 @@ jobs:
             echo "No requirements.txt found to add"
           fi
 
-          # Aggiungi previous_json_list.json dalla cartella maker_documentation
-          git add maker_documentation/previous_json_list.json
+          # Aggiungi previous_software_list.json dalla cartella maker_documentation
+          git add maker_documentation/previous_software_list.json || echo "No previous_software_list.json to add"
 
           # Effettua il commit e push delle modifiche
           git commit -m 'Update documentation files and add requirements.txt' || echo "No changes to commit"

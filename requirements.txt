@@ -1,0 +1,12 @@
+keras
+matplotlib
+numpy
+torch
+tensorflow
+scipy
+sklearn
+pandas
+imageio
+pytest
+seaborn
+jinja2

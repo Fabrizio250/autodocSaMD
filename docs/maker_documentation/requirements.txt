@@ -29,3 +29,4 @@ torch
 scikit-learn
 keras
 tensorflow
+sklearn

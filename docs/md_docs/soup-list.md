@@ -69,13 +69,13 @@
 | 23 | Unknown | tzdata | Python | 2024.2 | [https://github.com/python/tzdata](https://github.com/python/tzdata) | 2024-09-23 | N/A | N/A | N/A |
 | 24 | OS Independent | urllib3 | Python | 2.2.3 | [unknown](unknown) | 2024-09-12 | N/A | N/A | N/A |
 | 25 | Unknown | zipp | Python | 3.20.2 | [unknown](unknown) | 2024-09-13 | N/A | N/A | N/A |
-| 26 | MacOS X | imageio | 3 | unknown | [unknown](unknown) | 2024-08-19 | unknown | unknown | unknown |
-| 27 | MacOS | pytest | Only | unknown | [unknown](unknown) | 2024-09-10 | unknown | unknown | unknown |
-| 28 | Unknown | torch | C++ | unknown | [unknown](unknown) | 2024-09-04 | unknown | unknown | unknown |
-| 29 | Unknown | PIL | Python | unknown | [unknown](unknown) | Unknown | unknown | unknown | unknown |
-| 30 | Unknown | sklearn | Unknown | unknown | [unknown](unknown) | 2023-12-01 | unknown | unknown | unknown |
-| 31 | MacOS | keras | 3 | unknown | [unknown](unknown) | 2024-08-12 | unknown | unknown | unknown |
-| 32 | Unknown | tensorflow | 3 | unknown | [unknown](unknown) | 2024-07-11 | unknown | unknown | unknown |
+| 26 | MacOS X | imageio | Python | 2.35.1 | [https://github.com/imageio/imageio](https://github.com/imageio/imageio) | 2024-08-19 | N/A | N/A | N/A |
+| 27 | MacOS | pytest | Python | 8.3.3 | [unknown](unknown) | 2024-09-10 | N/A | N/A | N/A |
+| 28 | Unknown | torch | Unknown | 2.4.1 | [https://pytorch.org/](https://pytorch.org/) | 2024-09-04 | N/A | N/A | N/A |
+| 29 | MacOS | scikit-learn | C | 1.5.2 | [https://scikit-learn.org](https://scikit-learn.org) | 2024-09-11 | N/A | N/A | N/A |
+| 30 | MacOS | keras | Python | 2.14.0 | [https://keras.io/](https://keras.io/) | 2024-08-12 | N/A | N/A | N/A |
+| 31 | Unknown | tensorflow | Unknown | 2.14.0 | [https://www.tensorflow.org/](https://www.tensorflow.org/) | 2024-07-11 | N/A | N/A | N/A |
+| 32 | Unknown | sklearn | Python | unknown | [unknown](unknown) | 2023-12-01 | unknown | unknown | unknown |
 
 
 

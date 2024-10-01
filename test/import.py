@@ -12,7 +12,6 @@ import keras
 import torch
 
 # Import di moduli per la gestione delle immagini
-import PIL
 import imageio
 
 # Import di moduli di gestione del sistema operativo

@@ -46,7 +46,7 @@ jobs:
           git add docs/maker_documentation/previous_software_list.json || echo "No previous_software_list.json to add"
 
           # Esegui il commit e push delle modifiche
-          git commit -m 'Update documentation files and add requirements.txt' || echo "No changes to commit"
+          git commit -m 'Update documentation files' || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }} --force
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
